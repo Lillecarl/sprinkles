@@ -1,0 +1,14 @@
+interpreter = ["bash", "-euo", "pipefail", "-c"]
+
+[[task]]
+name = "reuse"
+group = "lints"
+script = "reuse lint"
+
+[[task]]
+name = "markdownlint"
+group = "lints"
+script = """
+git ls-files --cached --others --exclude-standard '*.md' | xargs markdownlint
+"""
+
