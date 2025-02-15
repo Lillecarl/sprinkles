@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+out_dir="$1"
+
+cd "$(git rev-parse --show-toplevel)"
+
+nixdoc_args=(
+    --file nix/lib/default.nix
+    --category "sprinkles"
+    --description "Sprinkles"
+    --prefix ""
+)
+
+mkdir -p "$out_dir"
+nixdoc "${nixdoc_args[@]}" > "$out_dir/sprinkles.md"

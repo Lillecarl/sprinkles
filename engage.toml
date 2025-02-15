@@ -12,3 +12,17 @@ script = """
 git ls-files --cached --others --exclude-standard '*.md' | xargs markdownlint
 """
 
+[[task]]
+name = "nixdoc"
+group = "lints"
+script = """
+tempdir="$(mktemp -d)"
+cleanup() {
+    rm -r "$tempdir"
+}
+trap cleanup EXIT
+
+genref "$tempdir"
+
+diff --recursive --color --unified "$tempdir" doc
+"""

@@ -3,6 +3,7 @@
   findutils,
   markdownlint-cli,
   mkShell,
+  nixdoc,
   reuse,
 }:
 
@@ -11,6 +12,7 @@ mkShell {
     engage
     findutils
     markdownlint-cli
+    nixdoc
     reuse
   ];
 }
