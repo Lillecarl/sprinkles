@@ -32,13 +32,17 @@ through it are considered public API.
 Here is a minimal example of a Sprinkle:
 
 ```nix
+{ sprinkles ? null }:
+
 let
   source = {
     sprinkles = <sprinkles>;
   };
 
   input = source: {
-    sprinkles = import source.sprinkles;
+    sprinkles = if sprinkles == null
+      then import source.sprinkles
+      else sprinkles;
   };
 in
 
@@ -49,20 +53,44 @@ in
 }
 ```
 
-### Accessing `source` and `input`
+### Requirements
 
-**IMPORTANT:** The `(input source).sprinkles.new {` and `inherit input source;`
-lines must be the only instances where:
+The following requirements must be met in order for a Sprinkle to be valid:
 
-* `input` is called manually.
-* `source` and `input` are directly referenced from their `let` bindings.
+1. `sprinkles ? null` must be the only formal argument of the file.
+2. `source` and `input` must be the only variables defined in the `let` binding.
+3. `source` must be an attribute set of sources. Sources will be described in
+   the next section.
+4. `input` must be a function that takes the `source` attribute set and returns
+   an attribute set of inputs. Inputs will be described in the next section.
+5. The attribute returned by the `input` function providing access to the
+   Sprinkles library must be set to the value of the `sprinkles` formal argument
+   if it is not `null`.
+6. The `input` function must only be called once, and it must be for the purpose
+   of calling the `new` function from the Sprinkles library to create the
+   current Sprinkle.
+7. The `source` variable defined in the `let` binding must only be referenced
+   directly in a few situations:
+   1. Once for the `(input source).sprinkles.new` call.
+   2. Once to be passed to the `source` attribute argument of the `(input
+      source).sprinkles.new` function call.
+8. The `input` variable defined in the `let` binding must only be referenced
+   directly in a few situations:
+   1. Once for the `(input source).sprinkles.new` call.
+   2. Once to be passed to the `input` attribute argument of the `(input
+      source).sprinkles.new` function call.
+   3. Zero or more times for recursion within its definition. When recursing,
+      the previous `source` argument should be passed to the next call
+      unmodified.
+9. The file the Sprinkle is defined in must evaluate to the return value of the
+   `(input source).sprinkles.new` call.
 
-Outside of those two cases, accessing `input` and `source` must be done in
-the body of the `output` function via its argument.
+In other words, the only parts of a Sprinkle that are freeform are:
 
-This allows consumers of a Sprinkle to override its sources, inputs, or both.
-However, it is unfortunately not possible to override the source or input used
-for the initial `(input source).sprinkles.new` call.
+1. The values in the `source` attribute set.
+2. The values in the attribute set returned by the `input` function, with the
+   exception of handling the non-`null` case of the `sprinkles` formal argument.
+3. The value returned by the `output` function.
 
 ### The difference between sources and inputs
 
@@ -139,7 +167,7 @@ Assuming the minimal example Sprinkle has been imported into the variable
 `sprinkle`, its sources and inputs can be overridden like so:
 
 ```nix
-sprinkle.override {
+(sprinkle {}).override {
   source = {
     sprinkles = <sprinkles>;
   };
@@ -164,8 +192,25 @@ In the above example, the `source` override makes no semantic difference because
 it's the same as the original, and the `input` override imports the source like
 before but also overrides the `new` function. The override for the `sprinkles`
 input will not apply for the `(input source).sprinkles.new` call inside
-`sprinkle` as discussed earlier, so this will only cause evaluation to abort if
-it is called again inside `sprinkle`'s `output` function.
+`sprinkle`, so this will only cause evaluation to abort if it is called again
+inside `sprinkle`'s `output` function.
+
+To override the Sprinkles library such that the `(input source).sprinkles.new`
+call inside `sprinkle` *does* cause evaluation to abort, the following can be
+done:
+
+```nix
+(sprinkle {
+  sprinkles = (import <sprinkles>) // {
+    new = _: builtins.abort "overridden `new` function in effect";
+  };
+})
+```
+
+Because of the special handling of the `sprinkles` formal argument required of
+Sprinkles, the above also has the effect of overriding the `input` providing
+access to the Sprinkles library, so calls through `self` in the `output`
+function will also use this overridden instance of the Sprinkles library.
 
 ### API reference
 

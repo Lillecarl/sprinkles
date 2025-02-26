@@ -1,3 +1,5 @@
+{ sprinkles ? null }:
+
 let
   source =
     # Load sources from `flake.lock`.
@@ -20,7 +22,9 @@ let
     };
 
   input = source: {
-    sprinkles = import source.self;
+    sprinkles = if sprinkles == null
+      then import source.self
+      else sprinkles;
     nixpkgs = import source.nixpkgs {
       config.allowAliases = false;
     };
