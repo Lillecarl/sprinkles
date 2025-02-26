@@ -29,6 +29,8 @@ through it are considered public API.
 
 ### Minimal example
 
+Here is a minimal example of a Sprinkle:
+
 ```nix
 let
   source = {
