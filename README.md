@@ -133,7 +133,7 @@ sources and inputs.
 
 ### Overriding sources and inputs
 
-Assuming the minimal example Sprinkle is evaluated and stored in the variable
+Assuming the minimal example Sprinkle has been imported into the variable
 `sprinkle`, its sources and inputs can be overridden like so:
 
 ```nix
