@@ -1,7 +1,7 @@
 # Sprinkles
 
 Sprinkles provides a common schema for managing dependencies, exposing items,
-and enabling overridability.
+enabling overridability, and allowing self-references.
 
 Sprinkles does not require or provide any particular mechanism for acquiring and
 pinning sources. Instead, it expects another tool to provide that functionality,
