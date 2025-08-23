@@ -5,11 +5,12 @@ and enabling overrideability.
 
 Sprinkles does not require or provide any particular mechanism for acquiring and
 pinning sources. Instead, it expects another tool to provide that functionality,
-such as [`NIX_PATH`], [built-in fetchers], [niv], [npins], or even [flakes],
-for example.
+such as [`NIX_PATH`], [built-in fetchers], [lon], [niv], [npins], or even
+[flakes], for example.
 
 [`NIX_PATH`]: https://docs.lix.systems/manual/lix/stable/command-ref/env-common.html#env-NIX_PATH
 [built-in fetchers]: https://docs.lix.systems/manual/lix/stable/language/builtins.html
+[lon]: https://github.com/nikstur/lon
 [niv]: https://github.com/nmattia/niv
 [npins]: https://github.com/andir/npins
 [flakes]: https://docs.lix.systems/manual/lix/stable/command-ref/new-cli/nix3-flake.html
