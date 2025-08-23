@@ -17,7 +17,7 @@ let
     # Load sources from elsewhere.
     {
       self = if builtins.pathExists ../.git
-        then builtins.fetchGit ../.
+        then builtins.fetchGit { url = ../.; shallow = true; }
         else ../.;
     };
 

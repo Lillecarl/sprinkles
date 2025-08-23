@@ -1,0 +1,28 @@
+on:
+  push:
+    branches:
+      - 'v*'
+  pull_request:
+
+jobs:
+  ci:
+    strategy:
+      matrix:
+        include:
+          - system: x86_64-linux
+          - system: aarch64-linux
+    runs-on: "nix-${{ matrix.system }}"
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Enable experimental features
+        run: echo 'experimental-features = nix-command' >> /etc/nix/nix.conf
+
+      - name: Install `direnv`
+        run: nix profile install -f nix input.nixpkgs.direnv
+
+      - name: Allow `.envrc`
+        run: direnv allow
+
+      - name: Run `engage`
+        run: direnv exec . engage
