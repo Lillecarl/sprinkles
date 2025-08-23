@@ -2,17 +2,8 @@
 
 let
   source =
-    # Load sources from `flake.lock`.
-    (import (
-      let
-        lock = builtins.fromJSON (builtins.readFile ./flake.lock);
-        inherit (lock.nodes.flake-compat.locked) narHash rev url;
-      in
-      builtins.fetchTarball {
-        url = "${url}/archive/${rev}.tar.gz";
-        sha256 = narHash;
-      }
-    ) { src = ./.; }).inputs
+    # Load sources from `lon.nix`.
+    (import ./lon.nix)
     //
     # Load sources from elsewhere.
     {
