@@ -120,25 +120,25 @@ are some conventions:
 * The return value is an attribute set.
 * The attribute name `lib` is an attribute set of functions, potentially nested
   within additional attribute sets.
-* The attribute name `package` is an attribute set of packages, potentially
+* The attribute name `packages` is an attribute set of packages, potentially
   nested within additional attribute sets. If there is only one package or if
   there is an obvious primary package, its attribute name is `default`.
-* The attribute name `shell` is an attribute set of shells, potentially nested
+* The attribute name `shells` is an attribute set of shells, potentially nested
   within additional attribute sets. If there is only one shell or if there is an
   obvious primary shell, its attribute name is `default`.
-* The attribute name `nixosModule` is an attribute set of NixOS modules,
+* The attribute name `nixosModules` is an attribute set of NixOS modules,
   potentially nested within additional attribute sets. If there is only one
   NixOS module or if there is an obvious primary NixOS module, its attribute
   name is `default`.
-* The attribute name `homeManagerModule` is an attribute set of Home Manager
+* The attribute name `homeManagerModules` is an attribute set of Home Manager
   modules, potentially nested within additional attribute sets. If there is only
   one Home Manager module or if there is an obvious primary Home Manager module,
   its attribute name is `default`.
-* The attribute name `nixosConfiguration` is an attribute set of NixOS
+* The attribute name `nixosConfigurations` is an attribute set of NixOS
   configurations, potentially nested within additional attribute sets. If
   there is only one NixOS configuration or if there is an obvious primary NixOS
   configuration, its attribute name is `default`.
-* The attribute name `homeManagerConfiguration` is an attribute set of Home
+* The attribute name `homeManagerConfigurations` is an attribute set of Home
   Manager configurations, potentially nested within additional attribute sets.
   If there is only one Home Manager configuration or if there is an obvious
   primary Home Manager configuration, its attribute name is `default`.
