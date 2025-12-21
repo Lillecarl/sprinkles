@@ -222,3 +222,28 @@ Also try loading the `default.nix` in `nix repl` and exploring the API
 interactively, making use of `:doc` if using [Lix].
 
 [Lix]: https://lix.systems/
+
+## Exposing a Sprinkle's outputs from a Flake
+
+Akin to the well known flake-compat scheme, it is possible to fill out a Nix flake with the outputs from a Sprinkle.
+
+Simply writing the following `flake.nix`:
+
+```nix
+{
+  description = "A flake shim constructed using sprinkles.";
+
+  inputs.nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
+  inputs.dried-nix-flakes.url = "github:cyberus-technology/dried-nix-flakes";
+
+  outputs =
+    inputs:
+    inputs.dried-nix-flakes inputs (
+      { nixpkgs, ... }:
+      ((import ./path/to/sprinkle.nix { }).override { input = _: { nixpkgs = nixpkgs.legacyPackages; }; }).output
+    );
+}
+```
+
+This allows full compatibility with the `nix flake` commands provided the name of
+the outputs in the Sprinkle match the expected scheme.
