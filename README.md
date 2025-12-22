@@ -225,7 +225,8 @@ interactively, making use of `:doc` if using [Lix].
 
 ## Exposing a Sprinkle's outputs from a Flake
 
-Akin to the well known flake-compat scheme, it is possible to fill out a Nix flake with the outputs from a Sprinkle.
+Akin to the well known flake-compat scheme, it is possible to fill out a Nix
+flake with the outputs from a Sprinkle.
 
 Simply writing the following `flake.nix`:
 
