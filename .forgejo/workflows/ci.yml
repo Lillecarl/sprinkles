@@ -19,7 +19,7 @@ jobs:
         run: echo 'experimental-features = nix-command' >> /etc/nix/nix.conf
 
       - name: Install `direnv`
-        run: nix profile install -f nix input.nixpkgs.direnv
+        run: nix profile install -f nix inputs.nixpkgs.direnv
 
       - name: Allow `.envrc`
         run: direnv allow
