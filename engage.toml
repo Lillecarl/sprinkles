@@ -1,14 +1,13 @@
-interpreter = ["bash", "-euo", "pipefail", "-c"]
+[processes.reuse]
+command = ["reuse", "lint"]
+ready-when = "exited"
 
-[[task]]
-name = "reuse"
-group = "lints"
-script = "reuse lint"
-
-[[task]]
-name = "markdownlint"
-group = "lints"
-script = """
-git ls-files --cached --others --exclude-standard '*.md' | xargs markdownlint
-"""
-
+[processes.markdownlint]
+command = [
+    "bash", "-euo", "pipefail", "-c",
+    """
+    git ls-files --cached --others --exclude-standard '*.md' |
+        xargs markdownlint
+    """,
+]
+ready-when = "exited"
