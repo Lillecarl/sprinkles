@@ -26,6 +26,6 @@ in
   inherit input source;
 
   output = self: {
-    shell.default = self.input.nixpkgs.callPackage ./shell/default {};
+    shells.default = self.input.nixpkgs.callPackage ./shells/default {};
   };
 }
